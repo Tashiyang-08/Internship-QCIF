@@ -1,0 +1,6 @@
+com\app\HealthController.class
+com\app\CorsConfig.class
+com\app\ApiApplication.class
+com\app\JobController.class
+com\app\JobController$1.class
+com\app\EchoController.class

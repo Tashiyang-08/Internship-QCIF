@@ -1,0 +1,14 @@
+.DS_Store
+.idea/
+*.iml
+__pycache__/
+*.pyc
+venv/
+.venv/
+build/
+dist/
+
+node_modules/
+*.log
+*.cache/
+.pytest_cache/

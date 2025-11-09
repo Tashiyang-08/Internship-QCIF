@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "filename": "sample.mp3",
+    "language": "en",
+    "duration_sec": 57.678375,
+    "text": "Your hands lie open in the long, fresh grass. The finger points look through like rosy blooms. Your eyes smile peace. The pasture gleams and glooms neath billowing skies that scatter and amass. All round our nest, far as the eye can pass, are golden king cup fields with silver edge, where the cow partially skirts the hawthorn hedge. Tis visible silence still is the hourglass. Your hands lie open in the long, fresh grass. The finger points look through like rosy blooms. Your eyes smile peace. The pasture gleams and glooms neath billowing skies that scatter and amass. All round our nest, far as the eye can pass, are golden king cup fields with silver edge, where the cow partially skirts the hawthorn hedge. Tis visible silence still is the hourglass.",
+    "summary": "Your hands lie open in the long, fresh grass. The finger points look through like rosy blooms. Your eyes smile peace. The pasture gleams and glooms neath billowing skies that scatter and amass. All round our nest, far as the eye can pass, are golden king cup fields with silver edge, where the cow partially skirts the hawthorn hedge. Tis visible silence still is the hourglass. Your hands lie open in the long, fresh grass. The finger points look through like rosy blooms. Your eyes smile peace. The pasture gleams and glooms neath billowing skies that scatter and amass. All round our nest, far as the eye can pass, are golden king cup fields with silver edge, where the cow partially skirts the hawthorn hedge. Tis visible silence still is the hourglass.",
+    "created_at": "2025-09-30T16:56:19.315267+00:00",
+    "model": "faster-whisper-medium"
+  },
+  {
+    "id": 2,
+    "filename": "sample.mp3",
+    "language": "en",
+    "duration_sec": 57.678375,
+    "text": "Your hands lie open in the long, fresh grass. The finger points look through like rosy blooms. Your eyes smile peace. The pasture gleams and glooms neath billowing skies that scatter and amass. All round our nest, far as the eye can pass, are golden king cup fields with silver edge, where the cow partially skirts the hawthorn hedge. Tis visible silence still is the hourglass. Your hands lie open in the long, fresh grass. The finger points look through like rosy blooms. Your eyes smile peace. The pasture gleams and glooms neath billowing skies that scatter and amass. All round our nest, far as the eye can pass, are golden king cup fields with silver edge, where the cow partially skirts the hawthorn hedge. Tis visible silence still is the hourglass.",
+    "summary": "Your hands lie open in the long, fresh grass. The finger points look through like rosy blooms. Your eyes smile peace. The pasture gleams and glooms neath billowing skies that scatter and amass. All round our nest, far as the eye can pass, are golden king cup fields with silver edge, where the cow partially skirts the hawthorn hedge. Tis visible silence still is the hourglass. Your hands lie open in the long, fresh grass. The finger points look through like rosy blooms. Your eyes smile peace. The pasture gleams and glooms neath billowing skies that scatter and amass. All round our nest, far as the eye can pass, are golden king cup fields with silver edge, where the cow partially skirts the hawthorn hedge. Tis visible silence still is the hourglass.",
+    "created_at": "2025-09-30T17:02:51.478308+00:00",
+    "model": "faster-whisper-medium"
+  },
+  {
+    "id": 3,
+    "filename": "a short audio message in Spanish.mp4",
+    "language": "es",
+    "duration_sec": 28.7463125,
+    "text": "Mamá, una cosa, voy a ir al supermercado, por si quieres que compre algo, había pensado en comprar dos barras de pan para el desayuno, unos tomates, unas cebollas y lo que no sé es si quedan patatas. Si lo puedes mirar y me avisas, te lo agradezco. Y luego también si necesitas alguna otra cosa, me lo escribes en un mensaje o me llamas, pero rápido porque voy a ir ya. Chao, te quiero.",
+    "summary": "Mamá, una cosa, voy a ir al supermercado, por si quieres que compre algo, había pensado en comprar dos barras de pan para el desayuno, unos tomates, unas cebollas y lo que no sé es si quedan patatas. Si lo puedes mirar y me avisas, te lo agradezco. Y luego también si necesitas alguna otra cosa, me lo escribes en un mensaje o me llamas, pero rápido porque voy a ir ya. Chao, te quiero.",
+    "created_at": "2025-09-30T17:05:17.571937+00:00",
+    "model": "faster-whisper-small"
+  },
+  {
+    "id": 4,
+    "filename": "sample.mp3",
+    "language": "en",
+    "duration_sec": 57.678375,
+    "text": "Your hands lie open in the long, fresh grass. The finger points look through like rosy blooms. Your eyes smile peace. The pasture gleams and glooms neath billowing skies that scatter and amass. All round our nest, far as the eye can pass, are golden king cup fields with silver edge, where the cow partially skirts the hawthorn hedge. Tis visible silence still is the hourglass. Your hands lie open in the long, fresh grass. The finger points look through like rosy blooms. Your eyes smile peace. The pasture gleams and glooms neath billowing skies that scatter and amass. All round our nest, far as the eye can pass, are golden king cup fields with silver edge, where the cow partially skirts the hawthorn hedge. Tis visible silence still is the hourglass.",
+    "summary": "Your hands lie open in the long, fresh grass. The finger points look through like rosy blooms. Your eyes smile peace. The pasture gleams and glooms neath billowing skies that scatter and amass. All round our nest, far as the eye can pass, are golden king cup fields with silver edge, where the cow partially skirts the hawthorn hedge. Tis visible silence still is the hourglass. Your hands lie open in the long, fresh grass. The finger points look through like rosy blooms. Your eyes smile peace. The pasture gleams and glooms neath billowing skies that scatter and amass. All round our nest, far as the eye can pass, are golden king cup fields with silver edge, where the cow partially skirts the hawthorn hedge. Tis visible silence still is the hourglass.",
+    "created_at": "2025-09-30T17:27:17.946872+00:00",
+    "model": "faster-whisper-medium"
+  },
+  {
+    "id": 5,
+    "filename": "sample.mp3",
+    "language": "en",
+    "duration_sec": 57.678375,
+    "text": "Your hands lie open in the long, fresh grass. The finger points look through like rosy blooms. Your eyes smile peace. The pasture gleams and glooms neath billowing skies that scatter and amass. All round our nest, far as the eye can pass, are golden king cup fields with silver edge, where the cow partially skirts the hawthorn hedge. Tis visible silence still is the hourglass. Your hands lie open in the long, fresh grass. The finger points look through like rosy blooms. Your eyes smile peace. The pasture gleams and glooms neath billowing skies that scatter and amass. All round our nest, far as the eye can pass, are golden king cup fields with silver edge, where the cow partially skirts the hawthorn hedge. Tis visible silence still is the hourglass.",
+    "summary": "Your hands lie open in the long, fresh grass. The finger points look through like rosy blooms. Your eyes smile peace. The pasture gleams and glooms neath billowing skies that scatter and amass. All round our nest, far as the eye can pass, are golden king cup fields with silver edge, where the cow partially skirts the hawthorn hedge. Tis visible silence still is the hourglass. Your hands lie open in the long, fresh grass. The finger points look through like rosy blooms. Your eyes smile peace. The pasture gleams and glooms neath billowing skies that scatter and amass. All round our nest, far as the eye can pass, are golden king cup fields with silver edge, where the cow partially skirts the hawthorn hedge. Tis visible silence still is the hourglass.",
+    "created_at": "2025-09-30T17:39:58.790522+00:00",
+    "model": "faster-whisper-medium"
+  },
+  {
+    "id": 6,
+    "filename": "sample.mp3",
+    "language": "en",
+    "duration_sec": 57.678375,
+    "text": "Your hands lie open in the long, fresh grass. The finger points look through like rosy blooms. Your eyes smile peace. The pasture gleams and glooms neath billowing skies that scatter and amass. All round our nest, far as the eye can pass, are golden king cup fields with silver edge, where the cow partially skirts the hawthorn hedge. Tis visible silence still is the hourglass. Your hands lie open in the long, fresh grass. The finger points look through like rosy blooms. Your eyes smile peace. The pasture gleams and glooms neath billowing skies that scatter and amass. All round our nest, far as the eye can pass, are golden king cup fields with silver edge, where the cow partially skirts the hawthorn hedge. Tis visible silence still is the hourglass.",
+    "summary": "Your hands lie open in the long, fresh grass. The finger points look through like rosy blooms. Your eyes smile peace. The pasture gleams and glooms neath billowing skies that scatter and amass. All round our nest, far as the eye can pass, are golden king cup fields with silver edge, where the cow partially skirts the hawthorn hedge. Tis visible silence still is the hourglass. Your hands lie open in the long, fresh grass. The finger points look through like rosy blooms. Your eyes smile peace. The pasture gleams and glooms neath billowing skies that scatter and amass. All round our nest, far as the eye can pass, are golden king cup fields with silver edge, where the cow partially skirts the hawthorn hedge. Tis visible silence still is the hourglass.",
+    "created_at": "2025-10-01T09:55:00.986091+00:00",
+    "model": "faster-whisper-medium"
+  }
+]
