@@ -34,3 +34,7 @@ models_backup/
 asr_backend/models/
 *.bin
 snapshots/
+
+# don't version runtime media
+asr_backend/data/media/
+*.mp3
