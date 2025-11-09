@@ -12,3 +12,8 @@ node_modules/
 *.log
 *.cache/
 .pytest_cache/
+
+# Local model weights (not in git)
+asr_backend/models/
+*.bin
+snapshots/
