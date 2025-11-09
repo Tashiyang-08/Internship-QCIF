@@ -17,3 +17,9 @@ node_modules/
 asr_backend/models/
 *.bin
 snapshots/
+
+# Do not version local model weights
+models_backup/
+asr_backend/models/
+*.bin
+snapshots/
