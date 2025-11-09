@@ -38,3 +38,6 @@ snapshots/
 # don't version runtime media
 asr_backend/data/media/
 *.mp3
+
+# build artifacts
+api-java/target/
