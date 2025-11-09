@@ -23,3 +23,8 @@ models_backup/
 asr_backend/models/
 *.bin
 snapshots/
+
+# do not version local/backup model weights
+models_backup/
+*.bin
+snapshots/
