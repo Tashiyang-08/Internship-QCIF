@@ -29,3 +29,31 @@ def send_email(to: str, subject: str, body: str) -> None:
         server.starttls(context=context)
         server.login(SMTP_USER, SMTP_PASS)
         server.send_message(msg)
+
+import os
+import aiosmtplib
+from email.message import EmailMessage
+
+SMTP_HOST = os.getenv("SMTP_HOST", "localhost")
+SMTP_PORT = int(os.getenv("SMTP_PORT", "1025"))
+SMTP_STARTTLS = os.getenv("SMTP_STARTTLS", "false").lower() == "true"
+SMTP_USERNAME = os.getenv("SMTP_USERNAME") or None
+SMTP_PASSWORD = os.getenv("SMTP_PASSWORD") or None
+MAIL_FROM = os.getenv("MAIL_FROM", "Transcription App <no-reply@localhost>")
+
+async def send_email(to: str, subject: str, html: str) -> None:
+    msg = EmailMessage()
+    msg["From"] = MAIL_FROM
+    msg["To"] = to
+    msg["Subject"] = subject
+    msg.set_content(html, subtype="html")
+
+    await aiosmtplib.send(
+        msg,
+        hostname=SMTP_HOST,
+        port=SMTP_PORT,
+        start_tls=SMTP_STARTTLS,
+        username=SMTP_USERNAME,
+        password=SMTP_PASSWORD,
+        timeout=30,
+    )

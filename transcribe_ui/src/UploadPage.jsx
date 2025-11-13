@@ -1,9 +1,9 @@
 // src/UploadPage.jsx
 import React from "react";
-import { listModels, transcribe, getSession, newSession } from "./lib/api";
+import { listModels, transcribe, transcribeSrt, getSession, newSession } from "./lib/api";
 import "./App.css";
 
-const STATE_KEY = "ts_ui_state_v2";
+const STATE_KEY = "ts_ui_state_v3";
 
 /* ---------- helpers to render [Speaker XX] with colors ---------- */
 const palette = ["#2563EB","#059669","#DC2626","#7C3AED","#D97706","#0EA5E9","#16A34A","#EA580C"];
@@ -34,6 +34,18 @@ function renderTaggedTranscript(text) {
 }
 /* ------------------------------------------------------------------ */
 
+function makeObjectUrl(blobOrFile) {
+  return URL.createObjectURL(blobOrFile);
+}
+function revokeUrl(url) {
+  try { url && URL.revokeObjectURL(url); } catch {}
+}
+
+function baseName(name) {
+  return (name || "audio").replace(/\.[a-z0-9]+$/i, "");
+}
+
+/** Serializable subset for localStorage */
 function serializeFiles(files) {
   return files.map((f) => ({
     id: f.id,
@@ -53,6 +65,12 @@ function serializeFiles(files) {
         }
       : null,
     err: f.err || "",
+    // downloads
+    downloads: {
+      txtUrl: f.downloads?.txtUrl || null,
+      srtUrl: f.downloads?.srtUrl || null,
+      // originalUrl is regenerated when file present
+    },
   }));
 }
 function reviveFiles(saved) {
@@ -64,6 +82,11 @@ function reviveFiles(saved) {
     chosenModel: f.chosenModel || null,
     res: f.res || null,
     err: f.err || "",
+    downloads: {
+      txtUrl: f.downloads?.txtUrl || null,
+      srtUrl: f.downloads?.srtUrl || null,
+      originalUrl: null, // rebuilt when file is re-added
+    },
   }));
 }
 
@@ -76,7 +99,7 @@ export default function UploadPage() {
   const [language, setLanguage] = React.useState("auto");
   const [summarize, setSummarize] = React.useState(true);
 
-  // NEW: diarization controls
+  // diarization controls
   const [diarize, setDiarize] = React.useState(true);
   const [numSpeakers, setNumSpeakers] = React.useState(3);
   const [diarizer, setDiarizer] = React.useState("auto");
@@ -105,10 +128,8 @@ export default function UploadPage() {
           if (saved.language) setLanguage(saved.language);
           if (saved.defaultModel) setDefaultModel(saved.defaultModel);
           if (typeof saved.summarize === "boolean") setSummarize(saved.summarize);
-
-          // restore diarization prefs if present
           if (typeof saved.diarize === "boolean") setDiarize(saved.diarize);
-          if (saved.numSpeakers) setNumSpeakers(saved.numSpeakers);
+          if (saved.numSpeakers != null) setNumSpeakers(saved.numSpeakers);
           if (saved.diarizer) setDiarizer(saved.diarizer);
 
           const revived = reviveFiles(saved.files);
@@ -142,25 +163,59 @@ export default function UploadPage() {
   }, [hydrated, sessionId, language, defaultModel, summarize, diarize, numSpeakers, diarizer, files, activeId, log]);
 
   function addFiles(list) {
-    const arr = Array.from(list || []).map((f) => ({
-      id: `${Date.now()}-${f.name}-${Math.random().toString(36).slice(2, 6)}`,
-      file: f,
-      name: f.name,
-      chosenModel: null,
-      status: "idle",
-      res: null,
-      err: "",
-    }));
+    const arr = Array.from(list || []).map((f) => {
+      const id = `${Date.now()}-${f.name}-${Math.random().toString(36).slice(2, 6)}`;
+      return {
+        id,
+        file: f,
+        name: f.name,
+        chosenModel: null,
+        status: "idle",
+        res: null,
+        err: "",
+        downloads: {
+          originalUrl: makeObjectUrl(f),
+          txtUrl: null,
+          srtUrl: null,
+        },
+      };
+    });
     setFiles((prev) => [...prev, ...arr]);
     if (!activeId && arr[0]) setActiveId(arr[0].id);
   }
+
   function removeFile(id) {
-    setFiles((prev) => prev.filter((x) => x.id !== id));
+    setFiles((prev) => {
+      const it = prev.find((x) => x.id === id);
+      if (it?.downloads?.originalUrl) revokeUrl(it.downloads.originalUrl);
+      if (it?.downloads?.txtUrl) revokeUrl(it.downloads.txtUrl);
+      if (it?.downloads?.srtUrl) revokeUrl(it.downloads.srtUrl);
+      return prev.filter((x) => x.id !== id);
+    });
     if (activeId === id) {
       const next = files.find((f) => f.id !== id);
       setActiveId(next ? next.id : null);
     }
   }
+
+  // Create/update TXT link whenever transcript changes
+  React.useEffect(() => {
+    const it = files.find((f) => f.id === activeId);
+    if (!it || !it.res?.text) return;
+    // build a fresh txt URL
+    const txtBlob = new Blob([it.res.text], { type: "text/plain;charset=utf-8" });
+    const url = makeObjectUrl(txtBlob);
+    setFiles((prev) =>
+      prev.map((x) => {
+        if (x.id !== it.id) return x;
+        if (x.downloads?.txtUrl) revokeUrl(x.downloads.txtUrl);
+        return { ...x, downloads: { ...(x.downloads || {}), txtUrl: url } };
+      })
+    );
+    // revoke on unmount or when content changes again
+    return () => revokeUrl(url);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeId, JSON.stringify(files.find((f) => f.id === activeId)?.res?.text || "")]);
 
   async function runOne(item) {
     const chosen = item.chosenModel || defaultModel || "auto";
@@ -169,7 +224,6 @@ export default function UploadPage() {
     );
     setLog((l) => [`▶ Transcribing: ${item.name || item.file?.name}`, ...l]);
     try {
-      // IMPORTANT: pass diarization options
       const res = await transcribe(item.file, chosen, {
         language,
         summarize,
@@ -180,7 +234,12 @@ export default function UploadPage() {
       setFiles((prev) =>
         prev.map((x) =>
           x.id === item.id
-            ? { ...x, status: "done", res, name: x.name || x.file?.name || res.filename || "audio" }
+            ? {
+                ...x,
+                status: "done",
+                res,
+                name: x.name || x.file?.name || res.filename || "audio",
+              }
             : x
         )
       );
@@ -204,6 +263,12 @@ export default function UploadPage() {
   }
 
   function clearQueue() {
+    // revoke object URLs
+    files.forEach((f) => {
+      revokeUrl(f.downloads?.originalUrl);
+      revokeUrl(f.downloads?.txtUrl);
+      revokeUrl(f.downloads?.srtUrl);
+    });
     setFiles([]);
     setActiveId(null);
     setLog(["(idle)"]);
@@ -224,6 +289,90 @@ export default function UploadPage() {
       prev.map((x) => (x.id === activeItem.id ? { ...x, chosenModel: val || null } : x))
     );
   };
+
+  // ---- Download actions shown in OUTPUT panel ----
+  async function onDownloadSrt(item) {
+    try {
+      if (!item?.file) {
+        alert("Re-add the file to this session to export SRT.");
+        return;
+      }
+      const chosen = item.chosenModel || defaultModel || "auto";
+      const blob = await transcribeSrt(item.file, chosen, {
+        language,
+        diarize,
+        num_speakers: diarize ? numSpeakers : undefined,
+        diarizer: diarize ? diarizer : undefined,
+      });
+      const url = makeObjectUrl(blob);
+      setFiles((prev) =>
+        prev.map((x) => {
+          if (x.id !== item.id) return x;
+          if (x.downloads?.srtUrl) revokeUrl(x.downloads.srtUrl);
+          return { ...x, downloads: { ...(x.downloads || {}), srtUrl: url } };
+        })
+      );
+    } catch (e) {
+      alert("SRT export failed: " + String(e));
+    }
+  }
+
+  function DownloadLinks({ item }) {
+    const base = baseName(item?.name || item?.file?.name || "transcript");
+    const txtReady = Boolean(item?.downloads?.txtUrl);
+    const srtReady = Boolean(item?.downloads?.srtUrl);
+    const canOriginal = Boolean(item?.downloads?.originalUrl);
+
+    return (
+      <div className="box" style={{ display: "grid", gap: 8 }}>
+        <div style={{ fontWeight: 600 }}>Downloads</div>
+        <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+          {/* Transcript TXT */}
+          <a
+            className={`btn ${!txtReady ? "disabled" : ""}`}
+            href={txtReady ? item.downloads.txtUrl : undefined}
+            download={`${base}.txt`}
+            onClick={(e) => { if (!txtReady) e.preventDefault(); }}
+            title={txtReady ? "Download transcript (.txt)" : "Transcript not available yet"}
+          >
+            Transcript (.txt)
+          </a>
+
+          {/* SRT (generate or download if ready) */}
+          {srtReady ? (
+            <a
+              className="btn"
+              href={item.downloads.srtUrl}
+              download={`${base}.srt`}
+              title="Download SRT subtitles"
+            >
+              Subtitles (.srt)
+            </a>
+          ) : (
+            <button
+              className="btn"
+              onClick={() => onDownloadSrt(item)}
+              disabled={!item?.file}
+              title={!item?.file ? "Re-add the file to export SRT" : "Generate SRT"}
+            >
+              Generate SRT
+            </button>
+          )}
+
+          {/* Original file */}
+          <a
+            className={`btn ${!canOriginal ? "disabled" : ""}`}
+            href={canOriginal ? item.downloads.originalUrl : undefined}
+            download={item?.file?.name || `${base}.wav`}
+            onClick={(e) => { if (!canOriginal) e.preventDefault(); }}
+            title={canOriginal ? "Download original audio/video" : "Not available for history items"}
+          >
+            Original file
+          </a>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="app-wrap">
@@ -269,7 +418,6 @@ export default function UploadPage() {
           &nbsp;Generate summary
         </label>
 
-        {/* NEW: diarization controls */}
         <label style={{ marginLeft: 24 }}>
           <input type="checkbox" checked={diarize} onChange={(e) => setDiarize(e.target.checked)} />
           &nbsp;Speaker diarization
@@ -278,10 +426,10 @@ export default function UploadPage() {
           Speakers:&nbsp;
           <input
             type="number"
-            min={2}
+            min={0}
             max={10}
             value={numSpeakers}
-            onChange={(e) => setNumSpeakers(parseInt(e.target.value || "2", 10))}
+            onChange={(e) => setNumSpeakers(parseInt(e.target.value || "0", 10))}
             className="box"
             style={{ width: 80 }}
             disabled={!diarize}
@@ -358,6 +506,11 @@ export default function UploadPage() {
                 {activeItem?.res?.text
                   ? renderTaggedTranscript(activeItem.res.text)
                   : (activeItem.file ? "(not transcribed yet)" : "(not transcribed in this session — re-add file)")}
+              </div>
+
+              {/* NEW: Downloads shown in the output panel */}
+              <div style={{ marginTop: 10 }}>
+                <DownloadLinks item={activeItem} />
               </div>
 
               <h4>Summary</h4>

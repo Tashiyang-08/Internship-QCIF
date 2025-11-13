@@ -8,23 +8,34 @@ import {
   resetPassword,
   verifyEmail,
 } from "./lib/api";
+
+// ✅ use auth helpers from ./lib/auth (NOT ./lib/api)
 import {
   login as apiLogin,
-  registerUser as apiRegister,
-  me as getCurrentUser,
+  register as apiRegister,
+  getCurrentUser,
   clearToken,
   authHeader,
-  // token helpers (optional)
-} from "./lib/api";
+} from "./lib/auth";
+
 import "./App.css";
 
 /* ------------------------- helpers ------------------------- */
 function toMessage(e) {
   if (!e) return "Something went wrong.";
   if (typeof e === "string") return e;
-  if (e.message && typeof e.message === "string") return e.message;
-  if (e.detail && typeof e.detail === "string") return e.detail;
-  if (e.error && typeof e.error === "string") return e.error;
+  if (e instanceof Error && e.message) return e.message;
+
+  // Common FastAPI shapes: {detail: "msg"} or {detail: [{msg: "...", ...}]}
+  if (e && typeof e === "object") {
+    const d = e.detail ?? e.error ?? e.message;
+    if (typeof d === "string") return d;
+    if (Array.isArray(d) && d.length) {
+      const first = d[0];
+      if (first?.msg) return first.msg;
+      if (typeof first === "string") return first;
+    }
+  }
   try {
     return JSON.stringify(e);
   } catch {
@@ -90,7 +101,9 @@ function AuthPanel({ onAuth }) {
       if (mode === "register") {
         await apiRegister({ email, password, full_name: fullName });
         const r = await sendVerificationEmail(email);
-        setMsg(r.link ? `Verification email sent.\nDev link: ${r.link}` : "Verification email sent. Check your inbox.");
+        setMsg(
+          r.link ? `Verification email sent.\nDev link: ${r.link}` : "Verification email sent. Check your inbox."
+        );
         setMode("login");
         return;
       }
@@ -633,7 +646,6 @@ export default function App() {
         </button>
       </div>
 
-      {/* Unverified banner with resend button (works only if server supports it) */}
       {(user.is_verified === false || user.is_verified === 0) && (
         <div className="panel error" style={{ margin: "12px auto", maxWidth: 960 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>

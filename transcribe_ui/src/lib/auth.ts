@@ -1,7 +1,9 @@
 // src/lib/auth.ts
 // Handles login, registration, logout, and JWT token management
 
-const API = "/api"; // Vite proxy to FastAPI backend
+// Use Vite env if provided (e.g., VITE_API_BASE="http://127.0.0.1:8000"),
+// otherwise fall back to "/api" (works with Vite proxy).
+const API_BASE = (import.meta as any)?.env?.VITE_API_BASE || "/api";
 const TOKEN_KEY = "access_token";
 
 export interface TokenResponse {
@@ -14,6 +16,13 @@ export interface User {
   email: string;
   full_name?: string | null;
   is_admin?: boolean;
+}
+
+/* ----------------------------- url helper ------------------------------ */
+
+function apiUrl(path: string): string {
+  const base = API_BASE.endsWith("/") ? API_BASE.slice(0, -1) : API_BASE;
+  return `${base}${path.startsWith("/") ? path : `/${path}`}`;
 }
 
 /* ----------------------------- token utils ----------------------------- */
@@ -61,19 +70,19 @@ export function decodeJwt(token: string): Record<string, unknown> | null {
 
 /* --------------------------------- auth -------------------------------- */
 
+/**
+ * Login with JSON body (email/password). This matches the FastAPI handler
+ * you’re running and avoids the 422 errors from form-encoded payloads.
+ */
 export async function login(email: string, password: string): Promise<TokenResponse> {
-  const body = new URLSearchParams();
-  body.set("username", email);
-  body.set("password", password);
-
-  const res = await fetch(`${API}/auth/login`, {
+  const res = await fetch(apiUrl("/auth/login"), {
     method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
   });
 
   if (!res.ok) {
-    throw new Error(await safeMessage(res) || "Invalid email or password");
+    throw new Error((await safeMessage(res)) || "Invalid email or password");
   }
 
   const data = (await res.json()) as TokenResponse;
@@ -85,10 +94,10 @@ export async function login(email: string, password: string): Promise<TokenRespo
 export async function register(
   email: string,
   password: string,
-  fullName: string,
+  fullName?: string,
   is_admin?: boolean
 ): Promise<User> {
-  const res = await fetch(`${API}/auth/register`, {
+  const res = await fetch(apiUrl("/auth/register"), {
     method: "POST",
     headers: { "Content-Type": "application/json; charset=utf-8" },
     body: JSON.stringify({
@@ -100,7 +109,7 @@ export async function register(
   });
 
   if (!res.ok) {
-    throw new Error(await safeMessage(res) || "Registration failed");
+    throw new Error((await safeMessage(res)) || "Registration failed");
   }
   return (await res.json()) as User;
 }
@@ -111,13 +120,13 @@ export async function getCurrentUser(): Promise<User | null> {
 
   // Optional: proactively clear expired tokens client-side
   const payload = decodeJwt(token);
-  const exp = typeof payload?.exp === "number" ? payload.exp : undefined;
+  const exp = typeof payload?.exp === "number" ? (payload.exp as number) : undefined;
   if (exp && Date.now() / 1000 > exp) {
     clearToken();
     return null;
   }
 
-  const res = await fetch(`${API}/auth/me`, {
+  const res = await fetch(apiUrl("/auth/me"), {
     headers: authHeader(),
   });
 
@@ -127,10 +136,31 @@ export async function getCurrentUser(): Promise<User | null> {
     return null;
   }
   if (!res.ok) {
-    throw new Error(await safeMessage(res) || "Failed to fetch current user");
+    throw new Error((await safeMessage(res)) || "Failed to fetch current user");
   }
 
   return (await res.json()) as User;
+}
+
+/* ----------------------- password reset helpers ------------------------ */
+
+export async function requestPasswordReset(email: string) {
+  const res = await fetch(apiUrl("/auth/request-password-reset"), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email }),
+  });
+  // backend returns a generic success message (and link in dev)
+  return res.json();
+}
+
+export async function resetPassword(token: string, new_password: string) {
+  const res = await fetch(apiUrl("/auth/reset-password"), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ token, new_password }),
+  });
+  return res.json();
 }
 
 /* ------------------------------ error util ----------------------------- */

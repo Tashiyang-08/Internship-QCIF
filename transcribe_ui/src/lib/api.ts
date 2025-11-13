@@ -96,6 +96,21 @@ function toMessage(e: any): string {
   }
 }
 
+// Try to extract JSON error from a non-OK fetch response (used for binary endpoints)
+async function readJsonError(resp: Response): Promise<string> {
+  try {
+    const j = await resp.json();
+    return toMessage(j);
+  } catch {
+    try {
+      const t = await resp.text();
+      return t || `HTTP ${resp.status}`;
+    } catch {
+      return `HTTP ${resp.status}`;
+    }
+  }
+}
+
 /* ------------------------------------------------------------------ */
 /* Core Backend API Calls                                             */
 /* ------------------------------------------------------------------ */
@@ -180,6 +195,49 @@ export async function transcribe(
     throw new Error(toMessage(res));
   }
   return res as TranscriptionResponse;
+}
+
+/** Export subtitles (SRT) for a given file + options. Returns a Blob you can download. */
+export async function transcribeSrt(
+  file: File,
+  model: string,
+  options?: {
+    language?: string;
+    diarize?: boolean;
+    num_speakers?: number;
+    diarizer?: "auto" | "basic" | "fallback";
+  }
+): Promise<Blob> {
+  if (!file) throw new Error("No audio file provided.");
+  if (!model) throw new Error("Missing 'model' parameter.");
+
+  const form = new FormData();
+  form.append("file", file);
+  form.append("model", model);
+
+  if (options?.language && options.language !== "auto") {
+    form.append("language", options.language);
+  }
+  if (options?.diarize) {
+    form.append("diarize", "true");
+    if (options.num_speakers && Number.isFinite(options.num_speakers)) {
+      form.append("num_speakers", String(options.num_speakers));
+    }
+    form.append("diarizer", options.diarizer ?? "auto");
+  }
+
+  // Use fetch directly here because we need the raw binary body (Blob)
+  const resp = await fetch("/api/transcribe/srt", {
+    method: "POST",
+    body: form,
+    headers: buildHeaders(undefined, true) as HeadersInit,
+  });
+
+  if (!resp.ok) {
+    const msg = await readJsonError(resp);
+    throw new Error(msg);
+  }
+  return await resp.blob();
 }
 
 /* ------------------------------------------------------------------ */

@@ -1,0 +1,160 @@
+1
+00:00:00,000 --> 00:00:05,000
+Job interview conversation
+
+2
+00:00:05,000 --> 00:00:13,000
+Today, we will watch a job interview conversation between Robert and Jane.
+
+3
+00:00:13,000 --> 00:00:16,000
+Let's start.
+
+4
+00:00:16,000 --> 00:00:25,000
+May I come in, sir?
+
+5
+00:00:26,000 --> 00:00:31,000
+Please, come in.
+
+6
+00:00:31,000 --> 00:00:43,000
+Good evening. My name is Robert, and I am the owner of this company. Please have your sit.
+
+7
+00:00:43,000 --> 00:00:50,000
+Thank you, Robert. I am Jane Frost. It's nice to meet you.
+
+8
+00:00:50,000 --> 00:00:54,000
+How are you doing, Jane?
+
+9
+00:00:54,000 --> 00:00:58,000
+Yes, I am fine.
+
+10
+00:00:58,000 --> 00:01:05,000
+Jane, today I will take your interview, so let's start.
+
+11
+00:01:05,000 --> 00:01:09,000
+Yeah, sure.
+
+12
+00:01:09,000 --> 00:01:19,000
+Welcome to Modern Design Company. We are a graphic and editing company, and we are looking for a designer in our company.
+
+13
+00:01:19,000 --> 00:01:22,000
+Oh, great.
+
+14
+00:01:22,000 --> 00:01:26,000
+So, are you fresher?
+
+15
+00:01:26,000 --> 00:01:34,000
+No, actually I worked in a marketing company. And now I am looking for a better opportunity.
+
+16
+00:01:34,000 --> 00:01:39,000
+Nice. Can I have your resume?
+
+17
+00:01:39,000 --> 00:01:44,000
+Sure, here you go.
+
+18
+00:01:44,000 --> 00:01:52,000
+Okay, Jane, now tell me a little about yourself.
+
+19
+00:01:52,000 --> 00:02:12,000
+I went to the University of California, and majored in graphic design. I started my career at a marketing company. I worked there about two years. Now, I want to work in a progressive company, with more creative members.
+
+20
+00:02:12,000 --> 00:02:24,000
+Oh, nice. We have a lot of creative departments and designers. And they are so friendly. Hope you will like that.
+
+21
+00:02:24,000 --> 00:02:33,000
+That's great. I would like to work with them, to share my creativity and learn from others.
+
+22
+00:02:33,000 --> 00:02:42,000
+So, you are a good learner. And this workplace is so friendly and comfortable.
+
+23
+00:02:42,000 --> 00:02:47,000
+Yes, I am so excited.
+
+24
+00:02:47,000 --> 00:02:54,000
+Okay, Jane. Now tell me, what is your strength?
+
+25
+00:02:54,000 --> 00:03:10,000
+I believe, my strongest trait is my attention to detail. And I have always been a great team player. I am good, at keeping a team together and producing quality work, in a team environment.
+
+26
+00:03:10,000 --> 00:03:18,000
+Great. So where do you see yourself, in next five years?
+
+27
+00:03:18,000 --> 00:03:42,000
+In five years, I see myself as a valued employee of this company. I want to be an expert, at my position, and start training to be a manager. Also my goal is to become a lead in five years. Although, not everyone gets promoted to this level, I believe, I can achieve this goal through hard work.
+
+28
+00:03:42,000 --> 00:03:49,000
+What does success mean, to you Jane?
+
+29
+00:03:49,000 --> 00:04:01,000
+Success means, to achieve a goal I have set for myself. Success means, to produce high quality work, before the deadline.
+
+30
+00:04:01,000 --> 00:04:08,000
+Nice answer. Can you work well, under pressure?
+
+31
+00:04:08,000 --> 00:04:25,000
+I enjoy working under pressure, because I believe, it helps me grow. In my previous experience, I always worked well, during deadlines, and I always learned, how to work more efficiently afterwards.
+
+32
+00:04:25,000 --> 00:04:32,000
+So, how do you make important decisions?
+
+33
+00:04:32,000 --> 00:04:51,000
+I gather all the information, I can find and based on the information, I'll come to the best decision I can. If I know a co-worker was in a similar situation, I wouldn't hesitate to find out the results, to make sure my decision is the best one.
+
+34
+00:04:51,000 --> 00:04:59,000
+Okay Jane. Interview done. Do you have any question for me?
+
+35
+00:04:59,000 --> 00:05:12,000
+No, I think I have a pretty good understanding of the job. I believe, that I can handle it with ease, and I hope to have the opportunity, to work for you.
+
+36
+00:05:12,000 --> 00:05:21,000
+Yeah, I hope so. Nice meeting you Jane. Thank you for coming.
+
+37
+00:05:21,000 --> 00:05:29,000
+Nice meeting you too. And thank you so much.
+
+38
+00:05:29,000 --> 00:05:34,000
+End of the interview.
+
+39
+00:05:34,000 --> 00:05:36,000
+Important tips.
+
+40
+00:05:36,000 --> 00:05:49,000
+Introduce yourself first. Speak clearly. Be polite. Be confident. Be optimistic. And do not forget to wear nice and clean dress.
+

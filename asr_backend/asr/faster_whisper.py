@@ -4,82 +4,74 @@ from __future__ import annotations
 import os
 from typing import Optional, Dict, Any, List
 
-from faster_whisper import WhisperModel
+try:
+    # faster-whisper 1.x
+    from faster_whisper import WhisperModel
+except Exception as e:
+    raise RuntimeError(
+        f"Failed to import faster_whisper: {type(e).__name__}: {e}. "
+        "Install with: pip install 'faster-whisper==1.0.3'"
+    )
 
-# Env defaults
-FW_DEVICE = os.getenv("FASTER_WHISPER_DEVICE", "cpu").lower()      # "cpu" | "cuda"
-FW_COMPUTE = os.getenv("FASTER_WHISPER_COMPUTE_TYPE", "int8").lower()
-MODEL_CACHE_DIR = os.getenv(
-    "ASR_MODEL_CACHE_DIR",
-    os.path.join(os.path.expanduser("~"), ".cache", "asr_models")
-)
-CPU_THREADS = int(os.getenv("FASTER_WHISPER_CPU_THREADS", "0"))    # 0 = library default
-NUM_WORKERS = int(os.getenv("FASTER_WHISPER_NUM_WORKERS", "1"))    # decoder workers
 
 class FasterWhisperEngine:
     """
-    Thin wrapper around faster-whisper's WhisperModel.
+    Thin wrapper used by our registry/chooser.
 
-    Args:
-      size:         "tiny" | "base" | "small" | "medium" | "large-v3" | HF repo id
-      device:       "cpu" or "cuda" (defaults from env)
-      compute_type: e.g., "int8" (CPU), "float16" (CUDA), "int8_float16", "int16", "float32"
+    IMPORTANT: We turn OFF Silero VAD by default (vad_filter=False) to avoid
+    Windows + onnxruntime + protobuf issues that throw:
+        INVALID_PROTOBUF: silero_vad.onnx failed: Protobuf parsing failed
+    You can re-enable it later by setting env FW_DISABLE_VAD=0.
     """
 
     def __init__(
         self,
-        size: str,
+        model_name: str,
         device: Optional[str] = None,
         compute_type: Optional[str] = None,
     ) -> None:
-        self.model_name = size
-        self.device = (device or FW_DEVICE or "cpu").lower()
-        self.compute_type = (compute_type or FW_COMPUTE or "int8").lower()
-
-        os.makedirs(MODEL_CACHE_DIR, exist_ok=True)
-
-        # IMPORTANT: use download_root (NOT cache_directory)
+        self.model_name = model_name
+        self.device = (device or "cpu")
+        self.compute_type = (compute_type or "int8")
         self._model = WhisperModel(
-            model_size_or_path=self.model_name,
+            model_name,
             device=self.device,
             compute_type=self.compute_type,
-            cpu_threads=CPU_THREADS,
-            num_workers=NUM_WORKERS,
-            download_root=MODEL_CACHE_DIR,
-            local_files_only=False,  # set True if you want to forbid downloads
         )
 
-    def transcribe(
-        self,
-        audio_path: str,
-        *,
-        language: Optional[str] = None,
-        beam_size: int = 5,
-        vad_filter: bool = True,
-        condition_on_previous_text: bool = True,
-    ) -> Dict[str, Any]:
+    def transcribe(self, path: str, language: Optional[str] = None) -> Dict[str, Any]:
+        # If FW_DISABLE_VAD is "1" (default), don't use Silero VAD at all.
+        # This completely bypasses loading silero_vad.onnx (the source of the crash).
+        vad_disabled = os.getenv("FW_DISABLE_VAD", "1") == "1"
+
+        # NOTE: You can pass additional knobs here if you like (beam_size, temperature, etc.)
         seg_iter, info = self._model.transcribe(
-            audio_path,
+            path,
             language=language,
-            beam_size=beam_size,
-            vad_filter=vad_filter,
-            condition_on_previous_text=condition_on_previous_text,
+            vad_filter=not vad_disabled,  # False by default → no Silero VAD
         )
 
         segments: List[Dict[str, Any]] = []
-        for seg in seg_iter:
-            segments.append({
-                "id": getattr(seg, "id", None),
-                "start": float(getattr(seg, "start", 0.0) or 0.0),
-                "end": float(getattr(seg, "end", 0.0) or 0.0),
-                "text": (getattr(seg, "text", "") or "").strip(),
-            })
+        last_end = 0.0
+        for s in seg_iter:
+            st = float(getattr(s, "start", 0.0) or 0.0)
+            en = float(getattr(s, "end", st) or st)
+            last_end = max(last_end, en)
+            segments.append(
+                {
+                    "start": st,
+                    "end": en,
+                    "text": (getattr(s, "text", "") or "").strip(),
+                }
+            )
 
-        return {
-            "text": " ".join(s["text"] for s in segments).strip(),
+        text = " ".join(seg.get("text", "") for seg in segments).strip()
+        out: Dict[str, Any] = {
+            "text": text,
             "segments": segments,
-            "duration_sec": float(getattr(info, "duration", 0.0) or 0.0),
-            "language": getattr(info, "language", None),
-            "language_prob": float(getattr(info, "language_probability", 0.0) or 0.0),
+            "language": getattr(info, "language", None) or None,
+            "language_prob": getattr(info, "language_probability", None),
+            "duration_sec": float(getattr(info, "duration", last_end) or last_end),
             "model": self.model_name,
         }
+        return out

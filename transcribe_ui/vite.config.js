@@ -1,3 +1,4 @@
+// vite.config.ts
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
@@ -13,6 +14,7 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
+      // Frontend calls:  /api/auth/login  -> backend sees: /auth/login
       "/api": {
         target: "http://127.0.0.1:8000",
         changeOrigin: true,

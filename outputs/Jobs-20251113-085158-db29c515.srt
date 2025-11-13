@@ -1,0 +1,376 @@
+1
+00:00:00,000 --> 00:00:09,440
+[Speaker 00] Hi, I'm Rhea. Thank you for coming to interview with us today. Let's just go ahead and get
+
+2
+00:00:09,440 --> 00:00:13,280
+[Speaker 00] started with a quick introduction. Could you tell me a little bit about yourself?
+
+3
+00:00:13,280 --> 00:00:17,200
+[Speaker 00] Yeah, absolutely. First of all, thank you so much for having me. It's an honor to be here.
+
+4
+00:00:17,760 --> 00:00:21,680
+[Speaker 00] So I've been about myself. I'm originally from Morocco, where I lived pretty much my whole
+
+5
+00:00:21,680 --> 00:00:25,920
+[Speaker 00] life. I then came to Boston and studied industrial engineering at Northeastern University.
+
+6
+00:00:26,480 --> 00:00:30,640
+[Speaker 00] While I was in college, I did a few different internships. I did technical ones at a local
+
+7
+00:00:30,640 --> 00:00:35,680
+[Speaker 00] power plant and at Amazon Robotics. And I also did one in consulting at the Boston Consulting Group
+
+8
+00:00:35,680 --> 00:00:40,560
+[Speaker 00] and was also the president of the consulting club at my university. So really I'm someone who
+
+9
+00:00:40,560 --> 00:00:44,080
+[Speaker 00] enjoys both the business side of things, but I also do have a passion for technology.
+
+10
+00:00:44,640 --> 00:00:49,040
+[Speaker 00] So down the line, my goal is to start my own education technology company in my home
+
+11
+00:00:49,040 --> 00:00:53,920
+[Speaker 00] country, Morocco, so I can make education more affordable through the use of tech. And
+
+12
+00:00:54,000 --> 00:00:58,560
+[Speaker 00] outside of school and work, I also do magic tricks on college campuses.
+
+13
+00:00:58,560 --> 00:01:01,840
+[Speaker 00] Oh wow, that sounds like a very impressive background.
+
+14
+00:01:01,840 --> 00:01:06,160
+[Speaker 00] So why exactly are you interested in interviewing with our consulting firm?
+
+15
+00:01:06,160 --> 00:01:10,160
+[Speaker 00] Yeah, my reasons for joining your consulting firm are twofold. Number one, I think the
+
+16
+00:01:10,160 --> 00:01:14,240
+[Speaker 00] exposure to the strategy work is very appealing to me. And then second, the opportunities for
+
+17
+00:01:14,240 --> 00:01:18,960
+[Speaker 00] externship is also one that I am highly looking at. So on the strategy side, I know that
+
+18
+00:01:18,960 --> 00:01:23,120
+[Speaker 00] your consulting firm is one of the few that gives you exposure to C-suite executives
+
+19
+00:01:23,200 --> 00:01:26,880
+[Speaker 00] and to strategy type projects early on in your career, which is something that I won't
+
+20
+00:01:26,880 --> 00:01:31,280
+[Speaker 00] find at other companies. Then the second reason is the opportunity to do externships.
+
+21
+00:01:31,280 --> 00:01:34,800
+[Speaker 00] So as I mentioned, I am interested in the education sector down the line and I know that
+
+22
+00:01:34,800 --> 00:01:39,600
+[Speaker 00] your company offers the opportunity to work for six months at a public sector type company
+
+23
+00:01:39,600 --> 00:01:43,440
+[Speaker 00] or a non-profit out in Africa focused on education. So I think those are some of
+
+24
+00:01:43,440 --> 00:01:46,080
+[Speaker 00] the things that highly appeal to me in your company.
+
+25
+00:01:46,080 --> 00:01:50,320
+[Speaker 00] Okay, awesome, that's good to know. So now we'll dive into a little bit more
+
+26
+00:01:50,400 --> 00:01:55,520
+[Speaker 00] behavioral questions. So could you tell me about a time where you solved a difficult problem?
+
+27
+00:01:55,520 --> 00:01:59,600
+[Speaker 00] That's a good question. I think the moment that I can think of is when I was working
+
+28
+00:01:59,600 --> 00:02:04,480
+[Speaker 00] at the electrical power plant. We were trying to launch a new department and my task was to
+
+29
+00:02:04,480 --> 00:02:09,520
+[Speaker 00] essentially source a supplier. Typically we work with a supplier of generators from France,
+
+30
+00:02:09,520 --> 00:02:14,000
+[Speaker 00] but this time around their capacity and also their pricing did not match our budget and
+
+31
+00:02:14,000 --> 00:02:18,480
+[Speaker 00] what we were looking for. So what I ended up doing is I ended up creating a large list
+
+32
+00:02:18,480 --> 00:02:22,560
+[Speaker 00] of all the different suppliers that are out there and then I found a supplier in South Korea that
+
+33
+00:02:22,560 --> 00:02:27,200
+[Speaker 00] I negotiated with and also was able to bring them in and implement all of the new generator
+
+34
+00:02:27,200 --> 00:02:32,400
+[Speaker 00] technology. So that was able to save us a total cost of 10% from the total project
+
+35
+00:02:32,400 --> 00:02:35,280
+[Speaker 00] and it was a huge success at the end of it.
+
+36
+00:02:35,280 --> 00:02:40,560
+[Speaker 00] Awesome, thank you for sharing that. So next, could you tell me about like one or two of
+
+37
+00:02:40,560 --> 00:02:46,160
+[Speaker 00] your key strengths? So I would say the biggest two would probably be my ability to persuade
+
+38
+00:02:46,160 --> 00:02:49,760
+[Speaker 00] people and then the second would be leadership. I would say those are the biggest two.
+
+39
+00:02:49,760 --> 00:02:54,320
+[Speaker 00] Okay, so could you dive a little bit more into that first one? Your ability to persuade people,
+
+40
+00:02:54,320 --> 00:02:58,240
+[Speaker 00] maybe tell me about a time you were able to convince someone to change their mind?
+
+41
+00:02:58,960 --> 00:03:03,600
+[Speaker 00] Yeah, so what I can think of is when I was working at Amazon, one of the big projects that
+
+42
+00:03:03,600 --> 00:03:08,480
+[Speaker 00] we're trying to launch is the first new robotic facility, but it came out a time when COVID
+
+43
+00:03:08,480 --> 00:03:13,440
+[Speaker 00] had just hit and I was unable to essentially source a lot of the material that we typically
+
+44
+00:03:13,440 --> 00:03:18,240
+[Speaker 00] get from our Japanese supplier. So the vice president of supply chain at the time,
+
+45
+00:03:18,240 --> 00:03:22,720
+[Speaker 00] his executive decision was to push the launch and push it out for a few months.
+
+46
+00:03:22,720 --> 00:03:27,680
+[Speaker 00] Instead, what I decided to do is try to see if there's a way to still keep the launch at the
+
+47
+00:03:27,680 --> 00:03:32,000
+[Speaker 00] same time and I looked at some of our existing facilities already and try to source some
+
+48
+00:03:32,000 --> 00:03:36,480
+[Speaker 00] of the unused material from there so that we don't delay the launch. So initially the
+
+49
+00:03:36,480 --> 00:03:40,000
+[Speaker 00] VP of supply chain wanted to delay the launch, but through the analysis,
+
+50
+00:03:40,000 --> 00:03:43,120
+[Speaker 00] through explaining to him that we could source it from the other facilities,
+
+51
+00:03:43,120 --> 00:03:47,920
+[Speaker 00] I was able to convince him to not delay the launch and instead change the strategy to still be able
+
+52
+00:03:47,920 --> 00:03:53,280
+[Speaker 01] to get the facility right out on time. Okay, great. So now we'll dive into that second
+
+53
+00:03:53,280 --> 00:03:57,520
+[Speaker 00] strength you had mentioned. Could you tell me about a time that you demonstrated strong
+
+54
+00:03:57,520 --> 00:04:02,960
+[Speaker 00] leadership skills? Yeah, the one that I can think of is when I was working at the Boston
+
+55
+00:04:02,960 --> 00:04:07,440
+[Speaker 00] Consulting Group. There I was leading a big real estate occupancy project,
+
+56
+00:04:07,440 --> 00:04:11,680
+[Speaker 00] where I wanted to essentially showcase what the attendance of each office looked like.
+
+57
+00:04:11,680 --> 00:04:15,200
+[Speaker 00] What I had to do was then automate the process for a lot of the partners so that they have
+
+58
+00:04:15,200 --> 00:04:18,800
+[Speaker 00] like a dashboard that they can like manipulate and change and look at the data.
+
+59
+00:04:18,800 --> 00:04:22,720
+[Speaker 00] So I had to work with a large team of 15 different developers, software engineers
+
+60
+00:04:22,720 --> 00:04:26,560
+[Speaker 00] and data engineers. So I worked with them to essentially gather the data,
+
+61
+00:04:27,120 --> 00:04:30,880
+[Speaker 00] clean the data and process it and put it and visualize it through Tableau.
+
+62
+00:04:30,880 --> 00:04:34,320
+[Speaker 00] So that was a great opportunity where I was essentially working with different teams,
+
+63
+00:04:34,320 --> 00:04:38,320
+[Speaker 00] putting game plans, putting timelines for them. And as I mentioned at the end of it,
+
+64
+00:04:38,320 --> 00:04:41,440
+[Speaker 00] it was a very strong project and the partners were very happy with the dashboard.
+
+65
+00:04:41,440 --> 00:04:44,960
+[Speaker 00] And it was a good like managerial experience for me at the time as well.
+
+66
+00:04:44,960 --> 00:04:49,040
+[Speaker 00] Awesome, that sounds like a very worthwhile experience. So now that we've talked a little
+
+67
+00:04:49,040 --> 00:04:53,840
+[Speaker 00] bit about your strengths, maybe you could tell me about a weakness that you face in the workforce.
+
+68
+00:04:54,560 --> 00:04:59,520
+[Speaker 00] Yeah, I'd say the biggest one is probably my ability to prioritize when there's a lot of
+
+69
+00:04:59,600 --> 00:05:04,880
+[Speaker 00] conflicting and competing priorities. The big one in that case would be when say there's
+
+70
+00:05:04,880 --> 00:05:08,400
+[Speaker 00] three or four different projects and all of them are high urgency or high priority.
+
+71
+00:05:08,400 --> 00:05:12,320
+[Speaker 00] Sometimes as someone who's still very junior in their career, I still don't have that business
+
+72
+00:05:12,320 --> 00:05:16,240
+[Speaker 00] sense on which one I should tackle first. But I've been trying to improve on it and work on
+
+73
+00:05:16,240 --> 00:05:20,480
+[Speaker 00] it. So what I do now is I typically just chat with my manager and try to understand
+
+74
+00:05:20,480 --> 00:05:24,560
+[Speaker 00] where the business focus should be. And sometimes even just directly ask on how I
+
+75
+00:05:24,560 --> 00:05:28,320
+[Speaker 00] should prioritize some of the work. So I have been improving on that a little bit.
+
+76
+00:05:28,320 --> 00:05:32,400
+[Speaker 00] And I think with some seniority, I'll hopefully be able to get there and understand what I should
+
+77
+00:05:32,400 --> 00:05:37,280
+[Speaker 00] start with first. Okay, definitely makes sense. So those are all the questions that I had for you
+
+78
+00:05:37,280 --> 00:05:43,760
+[Speaker 00] today. Before we end, do you have any questions for me? Yeah, I think I have two big questions.
+
+79
+00:05:43,760 --> 00:05:48,800
+[Speaker 00] I think the first one is, as you know, there's a lot of big push for like the remote workforce
+
+80
+00:05:48,800 --> 00:05:52,640
+[Speaker 00] right now. And as a consulting company, there's a lot of work working directly with
+
+81
+00:05:52,640 --> 00:05:56,320
+[Speaker 00] clients or coming in in person to visit the clients. Do you think that the consulting
+
+82
+00:05:56,320 --> 00:06:01,280
+[Speaker 00] business model would necessarily change now that we're are in a remote environment? I think
+
+83
+00:06:01,280 --> 00:06:05,440
+[Speaker 00] that's a big one. And then the second question that I had for you is, what are the kind of the
+
+84
+00:06:05,440 --> 00:06:10,240
+[Speaker 00] big goals of your consulting company by say 2025? What are the big milestones that you guys are
+
+85
+00:06:10,240 --> 00:06:14,000
+[Speaker 00] hoping to achieve? And is say international expansion, one of those big milestones that
+
+86
+00:06:14,000 --> 00:06:21,040
+[Speaker 00] you're looking at? Great. So I think Zia did an amazing job with that interview. There are
+
+87
+00:06:21,120 --> 00:06:26,320
+[Speaker 00] four main things that I think he did really well. First, he was very poised and confident
+
+88
+00:06:26,320 --> 00:06:30,720
+[Speaker 00] throughout the entire interview. We were going back and forth and I was asking him a lot of
+
+89
+00:06:30,720 --> 00:06:36,560
+[Speaker 00] questions, but he came back very prepared for each question. Second, he used the star method
+
+90
+00:06:36,560 --> 00:06:42,560
+[Speaker 00] very well. I could really understand the situation, task, action and result. And he
+
+91
+00:06:42,560 --> 00:06:47,440
+[Speaker 00] introduced each story in a way that made me understand what he was saying. Third,
+
+92
+00:06:47,440 --> 00:06:53,120
+[Speaker 00] he was very concise in each of his stories. And lastly, he ended with some very thoughtful
+
+93
+00:06:53,120 --> 00:06:57,280
+[Speaker 00] questions that made it seem like he really cared about the company and the position.
+
+94
+00:06:57,280 --> 00:07:03,360
+[Speaker 00] Overall, Zia did a great job and I would accelerate him to the next round.
+

@@ -1,4 +1,6 @@
+// src/AuthPanel.jsx
 import React, { useMemo, useState } from "react";
+import PasswordInput from "./components/PasswordInput";
 import { login, register } from "./lib/auth";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -85,17 +87,15 @@ export default function AuthPanel({ onAuth }) {
           </div>
         )}
 
-        <input
-          className="box"
-          type="password"
-          placeholder="Password"
+        {/* Password with show/hide eye icon */}
+        <PasswordInput
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
           autoComplete={mode === "login" ? "current-password" : "new-password"}
-          style={{ width: "100%", marginBottom: 6 }}
         />
         {password.length > 0 && password.length < 6 && (
-          <div style={{ color: "#c2410c", fontSize: 12, marginBottom: 6 }}>
+          <div style={{ color: "#c2410c", fontSize: 12, marginTop: 6 }}>
             At least 6 characters.
           </div>
         )}

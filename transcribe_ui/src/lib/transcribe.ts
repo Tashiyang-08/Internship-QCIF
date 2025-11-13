@@ -1,10 +1,7 @@
 // src/lib/transcribe.ts
 import { listModels, ping, transcribe, TranscriptionResponse } from "./api";
 
-/**
- * Pings the backend and fetches available models.
- * Returns ok=false if either step fails.
- */
+/** Ping backend + fetch models (returns ok=false if either fails) */
 export async function ensureApiReady(): Promise<{ ok: boolean; models: string[] }> {
   try {
     await ping();
@@ -19,13 +16,7 @@ export async function ensureApiReady(): Promise<{ ok: boolean; models: string[] 
   }
 }
 
-/**
- * Runs transcription with a safe model choice.
- * - Uses explicit model if valid; otherwise "auto" when available.
- * - Diarization:
- *    - diarize=true and num_speakers === undefined => AUTO speaker count on backend
- *    - diarize=true and num_speakers is number     => fixed count
- */
+/** Submit transcription with safe defaults (model/diarization/language) */
 export async function runTranscription(
   file: File,
   model?: string,
@@ -33,37 +24,40 @@ export async function runTranscription(
     language?: string;
     summarize?: boolean;
     diarize?: boolean;
-    num_speakers?: number | null; // leave null/undefined for AUTO
+    num_speakers?: number | null; // 0/null/undefined -> AUTO
     diarizer?: "auto" | "basic" | "fallback";
   }
 ): Promise<TranscriptionResponse> {
-  if (!file) {
-    throw new Error("No file provided");
-  }
+  if (!file) throw new Error("No file provided");
 
   let models: string[] = [];
   try {
     models = await listModels();
   } catch (e) {
-    console.warn("Failed to fetch models; using fallback.", e);
+    console.warn("Failed to fetch model list; using fallback.", e);
   }
 
   const uniq = Array.from(new Set(models));
   const hasAuto = uniq.includes("auto");
-  const preferredFallback = hasAuto ? "auto" : (uniq[0] || "faster-whisper-small");
+  const fallback = hasAuto ? "auto" : uniq[0] || "faster-whisper-small";
 
   const selectedModel =
-    model && uniq.length > 0 && uniq.includes(model) ? model : preferredFallback;
+    model && uniq.length > 0 && uniq.includes(model)
+      ? model
+      : fallback;
+
+  /** ✅ Speaker count AUTO logic */
+  const numSpeakers =
+    typeof opts?.num_speakers === "number" && opts.num_speakers > 0
+      ? opts.num_speakers
+      : undefined; // backend auto-mode
 
   const safeOpts = {
     language: opts?.language,
     summarize: Boolean(opts?.summarize),
     diarize: Boolean(opts?.diarize),
     diarizer: opts?.diarizer || "auto",
-    num_speakers:
-      typeof opts?.num_speakers === "number" && opts?.num_speakers > 0
-        ? opts?.num_speakers
-        : undefined, // AUTO when undefined
+    num_speakers: numSpeakers, // ✅ only send number if >0
   };
 
   return transcribe(file, selectedModel, safeOpts);

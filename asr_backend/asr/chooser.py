@@ -1,22 +1,23 @@
 # asr_backend/asr/chooser.py
 from __future__ import annotations
 
+import contextlib
+import importlib
 import json
 import logging
 import os
 import shutil
 import subprocess
 import wave
-import contextlib
-from typing import Optional
+from typing import Callable, Optional, Tuple
 
 from asr_backend.asr.registry import available_models, get_model
 
 log = logging.getLogger(__name__)
 
-# -------------------------
+# ============================================================
 # Optional deps (psutil for RAM probe)
-# -------------------------
+# ============================================================
 def _ram_gb() -> float:
     try:
         import psutil  # type: ignore
@@ -25,9 +26,9 @@ def _ram_gb() -> float:
         return 0.0
 
 
-# -------------------------
+# ============================================================
 # Duration probe (ffprobe -> wave header)
-# -------------------------
+# ============================================================
 def _ffprobe_duration(path: str) -> float:
     """Return duration (seconds). Falls back to wave header if ffprobe is missing."""
     ffprobe = shutil.which("ffprobe")
@@ -52,9 +53,9 @@ def _ffprobe_duration(path: str) -> float:
         return 0.0
 
 
-# -------------------------
+# ============================================================
 # GPU probe
-# -------------------------
+# ============================================================
 def _has_gpu() -> bool:
     try:
         import torch  # type: ignore
@@ -63,9 +64,9 @@ def _has_gpu() -> bool:
         return False
 
 
-# -------------------------
+# ============================================================
 # Config knobs (env-tunable)
-# -------------------------
+# ============================================================
 SHORT_SEC = float(os.getenv("CHOOSER_SHORT_SEC", "45"))     # short clip threshold
 MID_SEC = float(os.getenv("CHOOSER_MID_SEC", str(8 * 60)))  # mid clip threshold
 ALLOW_LARGE_ON_CPU = os.getenv("CHOOSER_ALLOW_LARGE_ON_CPU", "0") == "1"
@@ -73,9 +74,9 @@ RAM_LARGE_MIN_GB = float(os.getenv("CHOOSER_RAM_LARGE_MIN_GB", "12"))
 RAM_MEDIUM_MIN_GB = float(os.getenv("CHOOSER_RAM_MEDIUM_MIN_GB", "6"))
 
 
-# -------------------------
-# Core decision
-# -------------------------
+# ============================================================
+# Core ASR model decision
+# ============================================================
 def choose_model_for_file(path: str, *, language_hint: Optional[str] = None) -> str:
     """
     Auto-select the best model based on GPU, RAM, clip duration, and language.
@@ -119,7 +120,6 @@ def choose_model_for_file(path: str, *, language_hint: Optional[str] = None) -> 
         if not is_en:
             if ram_gb >= RAM_MEDIUM_MIN_GB:
                 order = [
-                    # optionally allow large on CPU if explicitly enabled and RAM is high enough
                     *(
                         ["faster-whisper-large-v3", "faster-whisper-large-v2"]
                         if ALLOW_LARGE_ON_CPU and ram_gb >= RAM_LARGE_MIN_GB
@@ -178,9 +178,76 @@ def choose_model_for_file(path: str, *, language_hint: Optional[str] = None) -> 
     return chosen
 
 
-# -------------------------
-# Public API
-# -------------------------
+# ============================================================
+# Diarizer chooser (NEW)
+# ============================================================
+DiarizerFn = Callable[..., list]  # (sig, sr, **kwargs) -> List[(start_sec, end_sec, spk_idx)]
+
+def _has_resemblyzer() -> bool:
+    try:
+        importlib.import_module("resemblyzer")
+        return True
+    except Exception:
+        return False
+
+def _try_import(module_name: str):
+    try:
+        return importlib.import_module(module_name)
+    except Exception:
+        return None
+
+def choose_diarizer(kind: Optional[str]) -> Tuple[DiarizerFn, str]:
+    """
+    Returns (diarize_fn, resolved_name)
+
+    kind: "auto" | "basic" | "fallback" | None
+      - "basic": uses diarize_basic.diarize_speakers_from_signal (centroid+silhouette)
+      - "fallback": uses a simple (or external) fallback that may return 1 speaker
+      - "auto": prefer "basic" if resemblyzer is installed; otherwise fallback
+      - None: treated as "auto"
+    """
+    k = (kind or "auto").lower()
+
+    # Explicit 'basic'
+    if k == "basic":
+        mod = _try_import("asr_backend.asr.diarize_basic") or _try_import("asr.asr.diarize_basic") or _try_import("asr.diarize_basic")
+        if not mod or not hasattr(mod, "diarize_speakers_from_signal"):
+            raise RuntimeError("Requested diarizer 'basic' but module not available")
+        return mod.diarize_speakers_from_signal, "basic"
+
+    # Explicit 'fallback'
+    if k == "fallback":
+        # Prefer external lightweight fallbacks if you have them
+        mod = _try_import("asr_backend.asr.vosk_asr") or _try_import("asr.vosk_asr") \
+              or _try_import("asr_backend.asr.wav2vec2_asr") or _try_import("asr.wav2vec2_asr")
+        if mod and hasattr(mod, "simple_diarize_fallback"):
+            return mod.simple_diarize_fallback, "fallback"
+
+        # Inline last-resort: one speaker full-span
+        def _single(sig, sr, **_):
+            return [(0.0, len(sig) / float(sr), 0)]
+        return _single, "fallback"
+
+    # AUTO
+    if _has_resemblyzer():
+        mod = _try_import("asr_backend.asr.diarize_basic") or _try_import("asr.asr.diarize_basic") or _try_import("asr.diarize_basic")
+        if mod and hasattr(mod, "diarize_speakers_from_signal"):
+            return mod.diarize_speakers_from_signal, "basic"
+
+    # If basic isn't available, fall back
+    mod = _try_import("asr_backend.asr.vosk_asr") or _try_import("asr.vosk_asr") \
+          or _try_import("asr_backend.asr.wav2vec2_asr") or _try_import("asr.wav2vec2_asr")
+    if mod and hasattr(mod, "simple_diarize_fallback"):
+        return mod.simple_diarize_fallback, "fallback"
+
+    def _single(sig, sr, **_):
+        return [(0.0, len(sig) / float(sr), 0)]
+    return _single, "fallback"
+
+
+# ============================================================
+# Public ASR API
+# ============================================================
 def transcribe_with_auto_choice(path: str, *, language: Optional[str] = None):
     """
     Choose the model automatically and run transcription.
